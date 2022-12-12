@@ -1,18 +1,20 @@
 #pragma once
 
+#include <sys/socket.h>
+#include <netinet/ip.h>
 class Connection
 {
 private:
-    /* data */
+    int connfd;
+    sockaddr_in peerAdr;//address of peer socket
+
 public:
-    Connection(/* args */);
+    Connection(int,struct sockaddr_in);
     ~Connection();
+    void start();
 };
 
-Connection::Connection(/* args */)
-{
-}
+namespace threadSafe{
 
-Connection::~Connection()
-{
+    void* Read(void*);
 }
