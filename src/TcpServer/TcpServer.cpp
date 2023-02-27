@@ -1,27 +1,18 @@
 #include<iostream>
-#include<TcpServer.hpp>
+#include"TcpServer.hpp"
 #include"Connection.hpp"
 #include<sys/socket.h>
 #include<unistd.h>
 #include<arpa/inet.h>
 
-TcpServer::TcpServer(){
-
-    //this->conn_arr = new Connection[30]();
-    
-
-}
 
 void TcpServer::Listen(uint16_t port_num){
 
-    sockaddr_in bind_addr;
-    bind_addr.sin_family=AF_INET;
-    bind_addr.sin_port=htons(port_num);
-    bind_addr.sin_addr.s_addr=INADDR_ANY;
-
+    sockaddr_in bind_addr{AF_INET, htons(port_num),INADDR_ANY,{}};
+    
     int sockfd = socket(AF_INET,SOCK_STREAM,0);
     
-    this->listenfd=sockfd;
+    TcpServer::listenfd=sockfd;
 
     int err=bind(sockfd,(struct sockaddr*)(&bind_addr),sizeof(bind_addr));
 
@@ -33,8 +24,6 @@ void TcpServer::Listen(uint16_t port_num){
     if(err<0){
         std::cout<<"error occured in listening";
     }
-
-
 
 }
 
@@ -61,9 +50,14 @@ void TcpServer::initializeCon(int consockfd,sockaddr_in peer_socket){
     con.start();
 }
 
+TcpServer&  setTcpServer(TcpServer& tcpServer,u_int32_t ip,u_int16_t port){
+    tcpServer.ip=ip;
+    tcpServer.port=port;
+    return tcpServer;
+}
 
 TcpServer::~TcpServer(){
 
-    close(this->listenfd);    
+    close(TcpServer::listenfd);    
 
 }

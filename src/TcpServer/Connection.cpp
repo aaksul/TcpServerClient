@@ -15,8 +15,8 @@ struct sock_port
 
 Connection::Connection(int connfd,struct sockaddr_in peer_socket){
     
-    this->connfd=connfd;
-    this->peerAdr=peer_socket;
+    Connection::connfd=connfd;
+    Connection::peerAdr=peer_socket;
 
 }
 Connection::~Connection(){
@@ -44,7 +44,7 @@ void* threadSafe::Read(void* arg){
     int readfd = sockport->sock;
     int port = sockport->port; 
     char buffer[1024];
-    while( int n = read(readfd,buffer,1024) > 0 ){
+    while( read(readfd,buffer,1024) > 0 ){
         std::cout << port <<">>"<<buffer << std::endl;
         std::memset(buffer,'\0',1024);
     }
