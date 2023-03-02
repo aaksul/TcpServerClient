@@ -1,3 +1,4 @@
-add_subdirectory(TcpClient)
-add_subdirectory(TcpServer)
-add_subdirectory(CommandParser)
+add_subdirectory(tcpclient)
+add_subdirectory(tcpserver)
+add_subdirectory(commandparser)
+add_subdirectory(socket)

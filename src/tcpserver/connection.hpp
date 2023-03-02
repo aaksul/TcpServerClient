@@ -5,8 +5,8 @@
 class Connection
 {
 private:
-    int connfd;
-    sockaddr_in peerAdr;//address of peer socket
+    int conn_fd_;
+    sockaddr_in peer_adr_;//address of peer socket
 
 public:
     Connection(int,struct sockaddr_in);
@@ -14,7 +14,7 @@ public:
     void start();
 };
 
-namespace threadSafe{
+namespace thread_safe{
 
     void* Read(void*);
 }
