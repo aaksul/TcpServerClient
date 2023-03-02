@@ -1,53 +1,54 @@
-#include"CommandParserServer.hpp"
-#include"TcpServer.hpp"
+#include"commandparserserver.hpp"
+#include"tcpserver.hpp"
 #include<iostream>
 #include<cstring>
 #include<arpa/inet.h>
 #include<cstdlib>
 
 enum StatusCode {
-    MISSINGARGUMENT=1,
-    WRONGIPFORMAT=2,
-    WRONGPORTFORMAT=3,
+    kMissingArgument=1,
+    kWrongIpFormat=2,
+    kWrongPortFormat=3,
 
 };
 
 void CommandParserServer::Parse(int argc,const char** argv,void* object){
     
-    int status=argumentCheck(argc,argv);
     TcpServer** server = static_cast<TcpServer**>(object);
+    int status=ArgumentCheck(argc,argv);
     
     switch (status)
     {
-    case StatusCode::MISSINGARGUMENT:
+    case StatusCode::kMissingArgument:
         *server=nullptr;
         std::cout << "missing argument, usage: -a <XXX.XXX.XXX.XXX> -p <0-65535>\n";
         return;
-    case StatusCode::WRONGIPFORMAT:
+    case StatusCode::kWrongIpFormat:
         *server=nullptr;
         std::cout << "wrong ip address\n";
         return;
-    case StatusCode::WRONGPORTFORMAT:
+    case StatusCode::kWrongPortFormat:
         *server=nullptr;
         std::cout << "wrong port format\n";
         return;
     }
-    u_int32_t ip;
-    inet_pton(AF_INET,argv[2],&ip);
-    u_int16_t port = std::atoi(argv[4]);
-    setTcpServer(**server,ip,port);
+
+    u_int32_t ip{};
+    inet_pton(AF_INET,argv[2],&(ip));
+    (*server)->ip(ip);
+    (*server)->port(std::atoi(argv[4]));
     
 
 }
 
-
-int CommandParserServer::argumentCheck(int argc,const char** argv){
-
-    if(argc!=CommandParserServer::argcLimit){
+int CommandParserServer::ArgumentCheck(int argc,const char** argv){
+    int argc_limit=get_argc_limit();
+    ArgumentPattern pattern=get_pattern();
+    if(argc!=argc_limit){
         return 1;
     }
     
-    if(strcmp(argv[1],pattern.adrOption) || strcmp(argv[3],pattern.portOption)){
+    if(strcmp(argv[1],pattern.adr_option) || strcmp(argv[3],pattern.port_option)){
         return 1;
     }
     unsigned char ip_add[4]{};
@@ -58,7 +59,6 @@ int CommandParserServer::argumentCheck(int argc,const char** argv){
     if( std::atoi(argv[4])==0 || (std::atoi(argv[4])>65536) ){
         return 3;
     }
-    
-    
     return 0;
-};
+}
+

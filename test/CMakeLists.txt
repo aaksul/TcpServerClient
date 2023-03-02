@@ -1,8 +1,9 @@
 
 
-add_subdirectory(CommandParserTest)
+add_subdirectory(commandparsertest)
+add_subdirectory(tcpsocket)
+add_subdirectory(tcpclient)
+add_executable(testmain testmain.cpp)
 
-add_executable(testMain testMain.cpp)
-
-target_link_libraries(testMain CommandParserTest)
-target_link_libraries(testMain :libgmock.a :libgtest.a)
+target_link_libraries(testmain commandparsertest tcpsockettest tcpclienttest)
+target_link_libraries(testmain :libgmock.a :libgtest.a)

@@ -1,5 +1,5 @@
 
-project(TcpServerClient)
+project(tcpserverclient)
 
 cmake_minimum_required(VERSION 3.21)
 
@@ -14,11 +14,11 @@ add_compile_options(-Wall -Wextra -Wpedantic)
 add_subdirectory(src)
 add_subdirectory(test)
 
-add_executable(TcpServerMain TcpServerMain.cpp)
+add_executable(tcpservermain tcpservermain.cpp)
 
-target_link_libraries(TcpServerMain TcpServer CommandParserServer)
+target_link_libraries(tcpservermain tcpserver commandparserserver tcpsocketserver)
 
 
-add_executable(TcpClientMain TcpClientMain.cpp)
+add_executable(tcpclientmain tcpclientmain.cpp)
 
-target_link_libraries(TcpClientMain TcpClient)
+target_link_libraries(tcpclientmain tcpclient commandparserclient tcpsocketclient)
