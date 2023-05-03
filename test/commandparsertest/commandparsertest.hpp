@@ -41,9 +41,9 @@ ArgcArgv testC2{5,argvC2};
 const char* argvC3[]={"TcpServerMain","-a","192.1628.1.1","-p","6222"};
 ArgcArgv testC3{5,argvC3};
 const char* argvC4[]={"TcpServerMain","-a","192.168.1.1","-p","622200"};
-ArgcArgv testC4{5,argvC4};
+ArgcArgv testC4{5,argvC4}; 
 
-INSTANTIATE_TEST_SUITE_P(NullCheckTests,
+INSTANTIATE_TEST_CASE_P(NullCheckTests,
                         CommandParserServerTest,
                         Values<ArgcArgv>(testC1,testC2,testC3,testC4));
 

@@ -43,17 +43,21 @@ void TcpServer::Accept(std::shared_ptr<TcpSocketServerI> tcp_socket_server){
     int connection_fd=tcp_socket_server->Accept(listen_fd_,(sockaddr*)(&peer_socket),&sizeaddr);
     if(connection_fd==-1)
         return;
-    //uint16_t port_num=ntohs(peer_socket.sin_port);
-    //char ip_add_str[INET_ADDRSTRLEN];
-    //inet_ntop(AF_INET,(struct sockaddr_in*)&peer_socket.sin_addr,ip_add_str,sizeof(ip_add_str));
-    tcp_socket_server->Close(connection_fd);
-    //InitializeConnection(connection_fd,peer_socket);
-    
+
+    Connection* connection=InitializeConnection(connection_fd,peer_socket);
+    connections_.push_back(connection);
+    //connection->start();
 }
 
-void TcpServer::InitializeConnection(int connection_sock_fd,sockaddr_in peer_socket){
+Connection* TcpServer::InitializeConnection(int connection_sock_fd,sockaddr_in peer_socket){
     //Create a connection
-    Connection con(connection_sock_fd,peer_socket);
-    con.start();
+    return new Connection(connection_sock_fd,peer_socket);    
 }
 
+TcpServer::~TcpServer(){
+    TcpSocket tcpsocket;
+    for(auto& connection : connections_){
+        connection->~Connection();
+    }
+
+}
